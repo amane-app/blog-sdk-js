@@ -1,5 +1,5 @@
 {
-    "name": "@amane/blog-sdk",
+    "name": "@amane-app/blog-sdk",
     "version": "0.1.0",
     "description": "AMANE Blog Distribution API SDK for JavaScript/TypeScript",
     "main": "dist/index.js",

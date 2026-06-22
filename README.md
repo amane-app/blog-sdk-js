@@ -1,6 +1,6 @@
 # AMANE Blog Distribution — JavaScript/TypeScript SDK
 
-[![npm version](https://img.shields.io/npm/v/@amane/blog-sdk.svg)](https://www.npmjs.com/package/@amane/blog-sdk)
+[![npm version](https://img.shields.io/npm/v/@amane-app/blog-sdk.svg)](https://www.npmjs.com/package/@amane-app/blog-sdk)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 公式 JavaScript/TypeScript SDK for the [AMANE Blog Distribution API](https://amane.app).
@@ -15,10 +15,10 @@ AMANE が AI で自動生成した SEO 記事を、Node.js / headless CMS / Next
 ## インストール
 
 ```bash
-npm install @amane/blog-sdk
+npm install @amane-app/blog-sdk
 # または
-pnpm add @amane/blog-sdk
-yarn add @amane/blog-sdk
+pnpm add @amane-app/blog-sdk
+yarn add @amane-app/blog-sdk
 ```
 
 ## 使い方
@@ -26,7 +26,7 @@ yarn add @amane/blog-sdk
 ### クライアント初期化
 
 ```typescript
-import { AmaneClient } from '@amane/blog-sdk';
+import { AmaneClient } from '@amane-app/blog-sdk';
 
 const client = new AmaneClient({
   apiUrl: 'https://service.amane.app',
