@@ -4,8 +4,29 @@
     "description": "AMANE Blog Distribution API SDK for JavaScript/TypeScript",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
+    "files": [
+        "dist/",
+        "README.md",
+        "LICENSE"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/amane-app/blog-sdk-js.git"
+    },
+    "homepage": "https://github.com/amane-app/blog-sdk-js#readme",
+    "bugs": {
+        "url": "https://github.com/amane-app/blog-sdk-js/issues"
+    },
+    "keywords": [
+        "amane",
+        "blog",
+        "seo",
+        "api-client",
+        "sdk"
+    ],
     "scripts": {
         "build": "tsc",
+        "prepublishOnly": "npm run build",
         "test": "node --test"
     },
     "devDependencies": {
