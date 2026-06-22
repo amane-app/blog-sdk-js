@@ -1,0 +1,15 @@
+{
+    "name": "@amane/blog-sdk",
+    "version": "0.1.0",
+    "description": "AMANE Blog Distribution API SDK for JavaScript/TypeScript",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "test": "node --test"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0"
+    },
+    "license": "MIT"
+}
