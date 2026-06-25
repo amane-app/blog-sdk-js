@@ -1,11 +1,34 @@
 import { AmaneApiError } from './types.js';
 
 export class HttpClient {
+  private readonly normalizedBaseUrl: string;
+
   constructor(
-    private readonly baseUrl: string,
+    baseUrl: string,
     private readonly token: string,
     private readonly timeout: number = 30000,
-  ) {}
+  ) {
+    this.normalizedBaseUrl = HttpClient.normalizeBaseUrl(baseUrl);
+  }
+
+  /**
+   * baseUrl から実際にリクエストに使う base を組み立てる。
+   *
+   * AMANE の SaaS API は `/api/v1/` 配下にあるので、SDK 利用者が
+   *   - `https://service.amane.app`        (= プレフィックス無し)
+   *   - `https://service.amane.app/api/v1` (= プレフィックス有り)
+   * のどちらを渡しても動くように吸収する。`/api/v2` 等の将来の API
+   * バージョンが含まれていればそのまま尊重 (= 将来互換)。
+   *
+   * @internal
+   */
+  static normalizeBaseUrl(baseUrl: string): string {
+    let normalized = baseUrl.replace(/\/+$/, '');
+    if (!/\/api\/v\d+$/.test(normalized)) {
+      normalized += '/api/v1';
+    }
+    return normalized + '/';
+  }
 
   private async request<T>(
     method: string,
@@ -13,10 +36,7 @@ export class HttpClient {
     body?: unknown,
     query?: Record<string, unknown>,
   ): Promise<T> {
-    const url = new URL(
-      path.replace(/^\//, ''),
-      this.baseUrl.endsWith('/') ? this.baseUrl : this.baseUrl + '/',
-    );
+    const url = new URL(path.replace(/^\//, ''), this.normalizedBaseUrl);
 
     if (query) {
       for (const [key, value] of Object.entries(query)) {
