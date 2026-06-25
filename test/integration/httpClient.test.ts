@@ -112,16 +112,24 @@ describe('HttpClient integration (mocked fetch)', () => {
   });
 
   it('aborts the request once the timeout elapses', async () => {
-    fetchMock.mockImplementation(
-      (_url: string, init: RequestInit) =>
-        new Promise((_resolve, reject) => {
-          init.signal?.addEventListener('abort', () =>
-            reject(new DOMException('Aborted', 'AbortError')),
-          );
-        }),
-    );
-    const client = new AmaneClient({ baseUrl: 'https://x.test', token: 't', timeout: 5 });
+    vi.useFakeTimers();
+    try {
+      fetchMock.mockImplementation(
+        (_url: string, init: RequestInit) =>
+          new Promise((_resolve, reject) => {
+            init.signal?.addEventListener('abort', () =>
+              reject(new DOMException('Aborted', 'AbortError')),
+            );
+          }),
+      );
+      const client = new AmaneClient({ baseUrl: 'https://x.test', token: 't', timeout: 5 });
 
-    await expect(client.usage.get()).rejects.toThrow();
+      const promise = client.usage.get();
+      const assertion = expect(promise).rejects.toMatchObject({ name: 'AbortError' });
+      await vi.advanceTimersByTimeAsync(5);
+      await assertion;
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
