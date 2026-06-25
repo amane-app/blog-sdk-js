@@ -61,6 +61,30 @@ describe('HttpClient integration (mocked fetch)', () => {
     expect(JSON.parse(init.body)).toEqual({ keywords: ['seo'], priority: 'high' });
   });
 
+  it('sends a PUT with a JSON body for updatePublication', async () => {
+    fetchMock.mockResolvedValue(jsonResponse({ ok: true }));
+    const client = new AmaneClient({ baseUrl: 'https://x.test', token: 't' });
+
+    await client.articles.updatePublication('a1', { published_url: 'https://blog/x' });
+
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe('https://x.test/api/v1/articles/a1/publication');
+    expect(init.method).toBe('PUT');
+    expect(JSON.parse(init.body)).toEqual({ published_url: 'https://blog/x' });
+  });
+
+  it('sends a DELETE with no body for markUnpublished', async () => {
+    fetchMock.mockResolvedValue(jsonResponse({ ok: true }));
+    const client = new AmaneClient({ baseUrl: 'https://x.test', token: 't' });
+
+    await client.articles.markUnpublished('a1');
+
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe('https://x.test/api/v1/articles/a1/publication');
+    expect(init.method).toBe('DELETE');
+    expect(init.body).toBeUndefined();
+  });
+
   it('parses a JSON success body', async () => {
     fetchMock.mockResolvedValue(jsonResponse({ data: [{ id: '1' }], meta: { total: 1 } }));
     const client = new AmaneClient({ baseUrl: 'https://x.test', token: 't' });
