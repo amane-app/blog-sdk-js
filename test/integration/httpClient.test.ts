@@ -98,7 +98,7 @@ describe('HttpClient integration (mocked fetch)', () => {
   });
 
   it('falls back to defaults when the error body lacks fields / is not JSON', async () => {
-    fetchMock.mockResolvedValue(new Response('boom', { status: 500 }));
+    fetchMock.mockImplementation(() => new Response('boom', { status: 500 }));
     const client = new AmaneClient({ baseUrl: 'https://x.test', token: 't' });
 
     await expect(client.usage.get()).rejects.toMatchObject({
