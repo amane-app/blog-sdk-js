@@ -63,9 +63,12 @@ console.log(article.outline);            // アウトライン (JSON)
 ```typescript
 await client.articles.reportPublication(
   '01HF3ABC...',
-  'https://customer.example.com/blog/article-slug',
+  'https://customer.example.com/blog/article-slug',           // publishedUrl (必須)
   new Date().toISOString(),                                   // publishedAt (省略可)
   'https://customer.example.com/blog/article-slug',           // canonicalUrl (省略可)
+  'CMS で編集した実タイトル',                                 // actualTitle (省略可)
+  'CMS で編集した実 meta description',                        // actualMetaDescription (省略可)
+  '見出しを 1 つ追加',                                        // deviationNotes (省略可)
 );
 ```
 
@@ -73,7 +76,7 @@ await client.articles.reportPublication(
 
 ```typescript
 await client.articles.updatePublication('01HF3ABC...', {
-  url: 'https://customer.example.com/new-slug',
+  published_url: 'https://customer.example.com/new-slug',
 });
 ```
 

@@ -37,26 +37,46 @@ describe('ArticleResource', () => {
     expect(http.get).toHaveBeenCalledWith('/articles/abc');
   });
 
-  it('reportPublication() sends only url when optionals are omitted', async () => {
+  it('reportPublication() sends published_url when optionals are omitted', async () => {
     await articles.reportPublication('a1', 'https://ex.com/p');
     expect(http.post).toHaveBeenCalledWith('/articles/a1/publication', {
-      url: 'https://ex.com/p',
+      published_url: 'https://ex.com/p',
     });
   });
 
   it('reportPublication() includes published_at and canonical_url when provided', async () => {
     await articles.reportPublication('a1', 'https://ex.com/p', '2026-01-01', 'https://ex.com/c');
     expect(http.post).toHaveBeenCalledWith('/articles/a1/publication', {
-      url: 'https://ex.com/p',
+      published_url: 'https://ex.com/p',
       published_at: '2026-01-01',
       canonical_url: 'https://ex.com/c',
+    });
+  });
+
+  it('reportPublication() includes actual_title / actual_meta_description / deviation_notes when provided', async () => {
+    await articles.reportPublication(
+      'a1',
+      'https://ex.com/p',
+      '2026-01-01',
+      'https://ex.com/c',
+      'CMS で直したタイトル',
+      'CMS で直した meta',
+      '見出しを追加',
+    );
+    expect(http.post).toHaveBeenCalledWith('/articles/a1/publication', {
+      published_url: 'https://ex.com/p',
+      published_at: '2026-01-01',
+      canonical_url: 'https://ex.com/c',
+      actual_title: 'CMS で直したタイトル',
+      actual_meta_description: 'CMS で直した meta',
+      deviation_notes: '見出しを追加',
     });
   });
 
   it('reportPublication() omits optionals passed as null', async () => {
     await articles.reportPublication('a1', 'https://ex.com/p', null, null);
     expect(http.post).toHaveBeenCalledWith('/articles/a1/publication', {
-      url: 'https://ex.com/p',
+      published_url: 'https://ex.com/p',
     });
   });
 

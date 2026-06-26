@@ -103,7 +103,7 @@ describe('AmaneClient E2E (local http server)', () => {
 
     const last = received.at(-1)!;
     expect(last.method).toBe('POST');
-    expect(JSON.parse(last.body)).toEqual({ url: 'https://blog/x', published_at: '2026-06-25' });
+    expect(JSON.parse(last.body)).toEqual({ published_url: 'https://blog/x', published_at: '2026-06-25' });
   });
 
   it('fetches usage', async () => {
